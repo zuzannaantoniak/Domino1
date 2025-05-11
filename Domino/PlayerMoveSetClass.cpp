@@ -48,13 +48,11 @@ kosc* PlayerMoveSet::znajdz_ruch() {
 kosc* HumanPlayer::pierwszy_ruch(){
 	Player& gracz = gracz_ref;
 	cout <<endl<<endl<<"Wybierz kosc ktora chcesz wylozyc na poczatek:"<<endl<<endl;
-	gracz.wypisz();
 	int wybor = 0;
 	cin >> wybor;
 	while (wybor < 1 || wybor>7) {
 		cout << "Blad! Masz do wyboru 7 kosci." << endl;
 		cout << "Wybierz kosc ktora chcesz wylozyc na poczatek:" << endl << endl;
-		gracz.wypisz();
 		cin >> wybor;
 	}
 	kosc* temp = gracz.gracz_glowa;
@@ -206,8 +204,10 @@ bool PlayerMoveSet::czy_dobierz() {
 void PlayerMoveSet::dobierz_kosc() {
 	Player& gracz = gracz_ref;
 	Stol stol = stol_ref;
+	cout << endl << "brak pasujacych kosci. dobierasz nowa kosc." << endl << endl;
 	kosc* dobierz = stol.losuj_i_usun();
-
+	dobierz->prev = gracz.gracz_ogon;
+	gracz.gracz_ogon->next = dobierz;
 }
 void PlayerMoveSet::usun_liste_mozliwych() {
 	while (lista_mozliwych) {
