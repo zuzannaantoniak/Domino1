@@ -5,14 +5,16 @@ kosc* Stol::losuj_i_usun() {
 	random_device rand;
 	mt19937 gen(rand());
 	int dlugosc = 0;
-	for (kosc* pom = dostepne_kosci_glowa; pom != nullptr; pom = pom->next) {
+	kosc* pom = dostepne_kosci_glowa;
+	while (pom!=nullptr) {
 		++dlugosc;
+		pom = pom->next;
 	}
+	if (dlugosc == 0) return nullptr;
 	uniform_int_distribution<> distrib(0, dlugosc - 1);
 	int losuj = distrib(gen);
 	if (!dostepne_kosci_glowa) return nullptr;
 
-	if (losuj > dlugosc) return nullptr;
 	kosc* usun = dostepne_kosci_glowa;
 	for (int j = 0; j < losuj; ++j) {
 		usun = usun->next;
@@ -20,10 +22,10 @@ kosc* Stol::losuj_i_usun() {
 
 	if (!usun) return nullptr;
 
-	if (usun->prev) usun->prev->next = usun->next;
+	if (usun->prev!= nullptr) usun->prev->next = usun->next;
 	else dostepne_kosci_glowa = usun->next;
 
-	if (usun->next) usun->next->prev = usun->prev;
+	if (usun->next!=nullptr) usun->next->prev = usun->prev;
 	else dostepne_kosci_ogon = usun->prev;
 
 	usun->prev = nullptr;
@@ -97,6 +99,7 @@ Stol::Stol() {
 			dostepne_kosci_ogon = nowy;
 		}
 	}
+	dostepne_kosci_ogon->next = nullptr;
 }
 //destruktor
 Stol::~Stol() {
@@ -105,4 +108,13 @@ Stol::~Stol() {
 		delete dostepne_kosci_glowa;
 		dostepne_kosci_glowa = temp;
 	}
+	dostepne_kosci_glowa = nullptr;
+	dostepne_kosci_ogon = nullptr;
+	while (kosci_na_stole_glowa != nullptr) {
+		kosc* temp = kosci_na_stole_glowa->next;
+		delete kosci_na_stole_glowa;
+		kosci_na_stole_glowa = temp;
+	}
+	kosci_na_stole_glowa = nullptr;
+	kosci_na_stole_ogon = nullptr;
 }

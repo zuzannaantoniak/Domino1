@@ -9,12 +9,14 @@ int main() {
 	Player gracz2(game);
 	HumanPlayer human1(gracz1, game);
 	HumanPlayer human2(gracz2,game);
+	cout << "--------------------------------------------------------" << endl;
 	cout << "kosci gracza 1: " << endl;
 	gracz1.wypisz();
 	kosc* ruch0 = human1.pierwszy_ruch();
 	game.doloz_kosc(ruch0);
 	game.wypisz_kosci_na_stole();
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < 8; ++i) {
+		cout << "--------------------------------------------------------" << endl;
 		cout << "kosci gracza 2: " << endl;
 		gracz2.wypisz();
 		kosc* mozliwe_ruchy = human2.znajdz_ruch();
@@ -25,6 +27,7 @@ int main() {
 		kosc* ruch1 = human2.wykonaj_ruch();
 		game.doloz_kosc(ruch1);
 		game.wypisz_kosci_na_stole();
+		cout << "--------------------------------------------------------" << endl;
 		cout << "kosci gracza 1: " << endl;
 		gracz1.wypisz();
 		kosc* mozliwe_ruchy1 = human1.znajdz_ruch();

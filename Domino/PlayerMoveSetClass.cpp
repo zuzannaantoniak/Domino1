@@ -203,11 +203,22 @@ bool PlayerMoveSet::czy_dobierz() {
 }
 void PlayerMoveSet::dobierz_kosc() {
 	Player& gracz = gracz_ref;
-	Stol stol = stol_ref;
-	cout << endl << "brak pasujacych kosci. dobierasz nowa kosc." << endl << endl;
+	Stol& stol = stol_ref;
 	kosc* dobierz = stol.losuj_i_usun();
-	dobierz->prev = gracz.gracz_ogon;
-	gracz.gracz_ogon->next = dobierz;
+	if (dobierz == nullptr) return;
+	cout << endl << "brak pasujacych kosci. dobierasz nowa kosc." << endl << endl;
+	if (gracz.gracz_glowa == nullptr) {
+		gracz.gracz_glowa = dobierz;
+		gracz.gracz_ogon = dobierz;
+		dobierz->next = nullptr;
+		dobierz->prev = nullptr;
+	}
+	else {
+		dobierz->prev = gracz.gracz_ogon;
+		gracz.gracz_ogon->next = dobierz;
+		gracz.gracz_ogon = dobierz;
+		gracz.gracz_ogon->next = nullptr;
+	}
 }
 void PlayerMoveSet::usun_liste_mozliwych() {
 	while (lista_mozliwych) {
