@@ -28,5 +28,6 @@ int main() {
 	game.doloz_kosc(ruch1);
 	game.wypisz_kosci_na_stole();
 	gracz1.wypisz();
+	cout << "ej widzisz mnie?" << endl;
 	return 0;
 }
