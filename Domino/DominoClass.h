@@ -65,8 +65,8 @@ public:
 	kosc* znajdz_ruch();//zwroci liste mozliwych ruchow do wykonania
 	virtual kosc* wykonaj_ruch() = 0; // gracz wybiera ruch z mozliwych
 	// zwraca wzkaznik na kosc do wylozenia i usuwa go z listy gracza
-	//void wyloz();
-
+	bool czy_dobierz();
+	void dobierz_kosc();
 	virtual ~PlayerMoveSet();
 };
 

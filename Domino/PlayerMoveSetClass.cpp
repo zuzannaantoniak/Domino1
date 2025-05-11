@@ -197,6 +197,18 @@ kosc* AIPlayer::wykonaj_ruch() {
 	cout << "blad krytyczny! Nie znaleziono wybranej kosci. Nawet program nie wie jak sie tu znalazles :P." << endl;
 	return nullptr;
 }
+bool PlayerMoveSet::czy_dobierz() {
+	if (lista_mozliwych == nullptr) {
+		return true;
+	}
+	else return false;
+}
+void PlayerMoveSet::dobierz_kosc() {
+	Player& gracz = gracz_ref;
+	Stol stol = stol_ref;
+	kosc* dobierz = stol.losuj_i_usun();
+
+}
 void PlayerMoveSet::usun_liste_mozliwych() {
 	while (lista_mozliwych) {
 		kosc* temp = lista_mozliwych->next;
