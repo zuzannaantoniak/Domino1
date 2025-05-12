@@ -39,13 +39,15 @@ void Stol::wypisz_kosci_na_stole() {
 	int counter = 0;
 	const int MAX_KOSCI = 28;
 	while (glowa != nullptr&&counter<MAX_KOSCI) {
-		cout <<" [" << glowa->oczko1 << "|" << glowa->oczko2 <<"] ";
+		cout <<"[" << glowa->oczko1 << "|" << glowa->oczko2 <<"] ";
 		glowa = glowa->next;
 		++counter;
 	}
 	cout << endl << endl;
 }
 void Stol::doloz_kosc(kosc* nowa) {
+	nowa->next = nullptr;
+	nowa->prev = nullptr;
 	if (kosci_na_stole_glowa == nullptr) {
 		kosci_na_stole_glowa = nowa;
 		kosci_na_stole_ogon = nowa;

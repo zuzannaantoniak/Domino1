@@ -12,7 +12,10 @@ struct kosc {
 	kosc* next;
 	kosc* prev;
 };
-
+struct mozliwy_ruch {
+	kosc* wskaznik_na_kosc;
+	mozliwy_ruch* next;
+};
 
 //stol - stan gry, kosci "na stole", kosci do dobrania, dokladanie kosci
 class Stol {
@@ -54,7 +57,7 @@ protected:
 	Player& gracz_ref;
 	Stol& stol_ref;
 
-	kosc* lista_mozliwych = nullptr;
+	mozliwy_ruch* lista_mozliwych = nullptr;
 private:
 	void usun_liste_mozliwych();
 public:
@@ -62,12 +65,13 @@ public:
 		: gracz_ref(gracz), stol_ref(stol) {}
 
 	virtual kosc* pierwszy_ruch() = 0;
-	kosc* znajdz_ruch();//zwroci liste mozliwych ruchow do wykonania
+	mozliwy_ruch* znajdz_ruch();//zwroci liste mozliwych ruchow do wykonania
 	virtual kosc* wykonaj_ruch() = 0; // gracz wybiera ruch z mozliwych
 	// zwraca wzkaznik na kosc do wylozenia i usuwa go z listy gracza
 	bool czy_dobierz();
 	void dobierz_kosc();
 	virtual ~PlayerMoveSet();
+	virtual void wypisz_mozliwe_ruchy() = 0;
 };
 
 
@@ -77,6 +81,7 @@ public:
 		: PlayerMoveSet(gracz, stol) {}
 	kosc* pierwszy_ruch() override;
 	kosc* wykonaj_ruch() override;
+	void wypisz_mozliwe_ruchy() override;
 };
 
 
@@ -86,7 +91,7 @@ public:
 		: PlayerMoveSet(gracz, stol) {}
 	kosc* pierwszy_ruch() override;
 	kosc* wykonaj_ruch() override;
-
+	void wypisz_mozliwe_ruchy() override;
 };
 
 #endif

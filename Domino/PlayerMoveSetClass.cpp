@@ -1,49 +1,62 @@
 #include "DominoClass.h"
 using namespace std;
-kosc* PlayerMoveSet::znajdz_ruch() {
+//tworzy liste WSKAZNIKOW na kosci w liscie gracza
+mozliwy_ruch* PlayerMoveSet::znajdz_ruch() {
 	usun_liste_mozliwych();
+
 	Player& gracz = gracz_ref;
 	Stol& stol = stol_ref;
-	kosc* temp_gracza_g = gracz.gracz_glowa;
-	kosc* mozliwe_ruchy = nullptr;
-	kosc* mozliwe_glowa = nullptr;
-	kosc* mozliwe_ogon = nullptr;
-	if (stol.kosci_na_stole_glowa && stol.kosci_na_stole_ogon) {
-		kosc* temp_gracza_g = gracz.gracz_glowa;
+	kosc* temp = gracz.gracz_glowa;
 
-		while (temp_gracza_g != nullptr) {
-			bool pasuje = (stol.kosci_na_stole_glowa->oczko1 == temp_gracza_g->oczko1 ||
-				stol.kosci_na_stole_glowa->oczko1 == temp_gracza_g->oczko2 ||
-				stol.kosci_na_stole_ogon->oczko2 == temp_gracza_g->oczko1 ||
-				stol.kosci_na_stole_ogon->oczko2 == temp_gracza_g->oczko2);
+	mozliwy_ruch* glowa = nullptr;
+	mozliwy_ruch* ogon = nullptr;
+
+	if (stol.kosci_na_stole_glowa && stol.kosci_na_stole_ogon) {
+		while (temp) {
+			bool pasuje =
+				stol.kosci_na_stole_glowa->oczko1 == temp->oczko1 ||
+				stol.kosci_na_stole_glowa->oczko1 == temp->oczko2 ||
+				stol.kosci_na_stole_ogon->oczko2 == temp->oczko1 ||
+				stol.kosci_na_stole_ogon->oczko2 == temp->oczko2;
 
 			if (pasuje) {
-				kosc* nowy = new kosc{ temp_gracza_g->oczko1, temp_gracza_g->oczko2, nullptr, nullptr };
+				mozliwy_ruch* nowy = new mozliwy_ruch{ temp, nullptr };
 
-				if (!mozliwe_glowa) {
-					mozliwe_glowa = nowy;
-					mozliwe_ogon = nowy;
+				if (!glowa) {
+					glowa = nowy;
+					ogon = nowy;
 				}
 				else {
-					mozliwe_ogon->next = temp_gracza;
-					temp_gracza->prev = mozliwe_ogon;
-					mozliwe_ogon = temp_gracza;
+					ogon->next = nowy;
+					ogon = nowy;
 				}
 			}
-			temp_gracza_g = temp_gracza_g->next;
+
+			temp = temp->next;
 		}
 	}
-	kosc* temp = mozliwe_glowa;
+	if (glowa == nullptr) {
+		dobierz_kosc();
+		return znajdz_ruch();
+	}
+	lista_mozliwych = glowa;
+	wypisz_mozliwe_ruchy();
+	return lista_mozliwych;
+}
+void HumanPlayer::wypisz_mozliwe_ruchy() {
+	mozliwy_ruch* temp = lista_mozliwych;
 	int i = 1;
-	cout << endl << endl << "Mozliwe ruchy do wykonania:" << endl << endl;
-	while (temp != nullptr) {
-		cout << i << ". [" << temp->oczko1 << "|" << temp->oczko2 << "]     ";
+	cout << "Mozliwe ruchy do wykonania:\n\n";
+	while (temp) {
+		cout << i << ". [" << temp->wskaznik_na_kosc->oczko1
+			<< "|" << temp->wskaznik_na_kosc->oczko2 << "]     ";
 		temp = temp->next;
 		++i;
 	}
-	cout << endl;
-	lista_mozliwych = mozliwe_glowa;
-	return lista_mozliwych;
+	cout << "\n\n";
+}
+void AIPlayer::wypisz_mozliwe_ruchy() {
+	cout << endl << endl;
 }
 kosc* HumanPlayer::pierwszy_ruch(){
 	Player& gracz = gracz_ref;
@@ -103,97 +116,73 @@ kosc* AIPlayer::pierwszy_ruch() {
 
 	return temp;
 }
-kosc* HumanPlayer::wykonaj_ruch(){
+kosc* HumanPlayer::wykonaj_ruch() {
 	Player& gracz = gracz_ref;
-	kosc* temp0 = lista_mozliwych;
+	mozliwy_ruch* temp = lista_mozliwych;
+
 	int i = 0;
-	while (temp0 != nullptr) {
-		temp0 = temp0->next;
+	while (temp) {
 		++i;
-	}
-	int wybor = 0;
-	cout << "wybierz kosc ktora chcesz wylozyc:" << endl << endl;
-	cin >> wybor;
-	while (wybor < 1 || wybor>i) {
-		cout << "Blad! Masz do wyboru "<<i<<" kosci." << endl;
-		cout << "Wybierz kosc ktora chcesz wylozyc:" << endl << endl;
-		cin >> wybor;
-	}
-	
-	kosc* wybrana = lista_mozliwych;
-	for (int i = 1; i < wybor; ++i) {
-		if (wybrana != nullptr)
-			wybrana = wybrana->next;
-	}
-
-	kosc* temp = gracz.gracz_glowa;
-	while (temp != nullptr) {
-		bool takie_same =
-			(temp->oczko1 == wybrana->oczko1 && temp->oczko2 == wybrana->oczko2) ||
-			(temp->oczko1 == wybrana->oczko2 && temp->oczko2 == wybrana->oczko1);
-
-		if (takie_same) {
-			break;
-		}
 		temp = temp->next;
 	}
-	if (temp != nullptr) {
-		if (temp->prev != nullptr) {
-			temp->prev->next = temp->next;
-		}
-		else {
-			gracz.gracz_glowa = temp->next;
-		}
 
-		if (temp->next != nullptr) {
-			temp->next->prev = temp->prev;
-		}
-		else {
-			gracz.gracz_ogon = temp->prev;
-		}
+	cout << "Wybierz kosc : ";
+	int wybor = 0;
+	cin >> wybor;
 
-		temp->next = nullptr;
-		temp->prev = nullptr;
-		return temp;
+	while (wybor < 1 || wybor > i) {
+		cout << "Bledny wybor, sprobuj ponownie: ";
+		cin >> wybor;
 	}
-	cout << "blad krytyczny! Nie znaleziono wybranej kosci. Nawet program nie wie jak sie tu znalazles :P." << endl;
-	return nullptr;
+
+	mozliwy_ruch* wybrany = lista_mozliwych;
+	for (int j = 1; j < wybor; ++j) {
+		wybrany = wybrany->next;
+	}
+
+	kosc* k = wybrany->wskaznik_na_kosc;
+
+	if (k->prev)
+		k->prev->next = k->next;
+	else
+		gracz.gracz_glowa = k->next;
+
+	if (k->next)
+		k->next->prev = k->prev;
+	else
+		gracz.gracz_ogon = k->prev;
+
+	k->next = nullptr;
+	k->prev = nullptr;
+
+	return k;
 }
 kosc* AIPlayer::wykonaj_ruch() {
 	Player& gracz = gracz_ref;
-	kosc* wybrana = lista_mozliwych;
-	kosc* temp = gracz.gracz_glowa;
-	while (temp != nullptr) {
-		bool takie_same =
-			(temp->oczko1 == wybrana->oczko1 && temp->oczko2 == wybrana->oczko2) ||
-			(temp->oczko1 == wybrana->oczko2 && temp->oczko2 == wybrana->oczko1);
+	mozliwy_ruch* temp = lista_mozliwych;
+	int wybor = 0;
 
-		if (takie_same) {
-			break;
-		}
-		temp = temp->next;
+	mozliwy_ruch* wybrany = lista_mozliwych;
+	for (int j = 1; j < wybor; ++j) {
+		wybrany = wybrany->next;
 	}
-	if (temp != nullptr) {
-		if (temp->prev != nullptr) {
-			temp->prev->next = temp->next;
-		}
-		else {
-			gracz.gracz_glowa = temp->next;
-		}
 
-		if (temp->next != nullptr) {
-			temp->next->prev = temp->prev;
-		}
-		else {
-			gracz.gracz_ogon = temp->prev;
-		}
+	kosc* k = wybrany->wskaznik_na_kosc;
 
-		temp->next = nullptr;
-		temp->prev = nullptr;
-		return temp;
-	}
-	cout << "blad krytyczny! Nie znaleziono wybranej kosci. Nawet program nie wie jak sie tu znalazles :P." << endl;
-	return nullptr;
+	if (k->prev)
+		k->prev->next = k->next;
+	else
+		gracz.gracz_glowa = k->next;
+
+	if (k->next)
+		k->next->prev = k->prev;
+	else
+		gracz.gracz_ogon = k->prev;
+
+	k->next = nullptr;
+	k->prev = nullptr;
+
+	return k;
 }
 bool PlayerMoveSet::czy_dobierz() {
 	if (lista_mozliwych == nullptr) {
@@ -206,7 +195,7 @@ void PlayerMoveSet::dobierz_kosc() {
 	Stol& stol = stol_ref;
 	kosc* dobierz = stol.losuj_i_usun();
 	if (dobierz == nullptr) return;
-	cout << endl << "brak pasujacych kosci. dobierasz nowa kosc." << endl << endl;
+	cout << endl << "brak pasujacych kosci. gracz dobiera kosc." << endl;
 	if (gracz.gracz_glowa == nullptr) {
 		gracz.gracz_glowa = dobierz;
 		gracz.gracz_ogon = dobierz;
@@ -222,14 +211,14 @@ void PlayerMoveSet::dobierz_kosc() {
 }
 void PlayerMoveSet::usun_liste_mozliwych() {
 	while (lista_mozliwych) {
-		kosc* temp = lista_mozliwych->next;
+		mozliwy_ruch* temp = lista_mozliwych->next;
 		delete lista_mozliwych;
 		lista_mozliwych = temp;
 	}
 }
 PlayerMoveSet::~PlayerMoveSet() {
 	while (lista_mozliwych) {
-		kosc* temp = lista_mozliwych->next;
+		mozliwy_ruch* temp = lista_mozliwych->next;
 		delete lista_mozliwych;
 		lista_mozliwych = temp;
 	}
