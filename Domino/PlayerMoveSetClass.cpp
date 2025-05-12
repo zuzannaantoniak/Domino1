@@ -25,9 +25,9 @@ kosc* PlayerMoveSet::znajdz_ruch() {
 					mozliwe_ogon = nowy;
 				}
 				else {
-					mozliwe_ogon->next = nowy;
-					nowy->prev = mozliwe_ogon;
-					mozliwe_ogon = nowy;
+					mozliwe_ogon->next = temp_gracza;
+					temp_gracza->prev = mozliwe_ogon;
+					mozliwe_ogon = temp_gracza;
 				}
 			}
 			temp_gracza_g = temp_gracza_g->next;
