@@ -50,7 +50,7 @@ bool PlayerMoveSet::znajdz_ruch() {
 void HumanPlayer::wypisz_mozliwe_ruchy() {
 	mozliwy_ruch* temp = lista_mozliwych;
 	int i = 1;
-	cout << "Mozliwe ruchy do wykonania:\n\n";
+	cout <<endl<<"Mozliwe ruchy do wykonania:"<<endl<<endl;
 	while (temp) {
 		cout << i << ". [" << temp->wskaznik_na_kosc->oczko1
 			<< "|" << temp->wskaznik_na_kosc->oczko2 << "]     ";
@@ -98,7 +98,10 @@ kosc* AIPlayer::pierwszy_ruch() {
 	
 	kosc* temp = gracz.gracz_glowa;
 	gracz.gracz_glowa = gracz.gracz_glowa->next;
-	gracz.gracz_glowa->prev = nullptr;
+	if (gracz.gracz_glowa != nullptr)
+		gracz.gracz_glowa->prev = nullptr;
+	else
+		gracz.gracz_ogon = nullptr;
 	temp->next = nullptr;
 	temp->prev = nullptr;
 	return temp;
@@ -114,16 +117,17 @@ kosc* HumanPlayer::wykonaj_ruch() {
 	}
 
 	cout << "Wybierz kosc : ";
-	int wybor = 0;
+	char wybor = 0;
 	cin >> wybor;
-
-	while (wybor < 1 || wybor > i) {
+	int b = wybor - '0';
+	while (b < 1 || b > i||isalpha(wybor)!=0) {
 		cout << "Bledny wybor, sprobuj ponownie: ";
 		cin >> wybor;
+		b = wybor - '0';
 	}
-
+	cout << endl;
 	mozliwy_ruch* wybrany = lista_mozliwych;
-	for (int j = 1; j < wybor; ++j) {
+	for (int j = 1; j < b; ++j) {
 		wybrany = wybrany->next;
 	}
 
@@ -141,13 +145,12 @@ kosc* HumanPlayer::wykonaj_ruch() {
 
 	k->next = nullptr;
 	k->prev = nullptr;
-
 	return k;
 }
 kosc* AIPlayer::wykonaj_ruch() {
 	Player& gracz = gracz_ref;
 	mozliwy_ruch* temp = lista_mozliwych;
-	int wybor = 0;
+	int wybor = 1;
 
 	mozliwy_ruch* wybrany = lista_mozliwych;
 	for (int j = 1; j < wybor; ++j) {
@@ -168,7 +171,6 @@ kosc* AIPlayer::wykonaj_ruch() {
 
 	k->next = nullptr;
 	k->prev = nullptr;
-
 	return k;
 }
 bool PlayerMoveSet::czy_dobierz() {
@@ -183,7 +185,7 @@ bool PlayerMoveSet::dobierz_kosc() {
 
 	kosc* dobierz = stol.losuj_i_usun();
 	if (dobierz == nullptr) return false;
-	cout << endl << "brak pasujacych kosci. gracz dobiera kosc." << endl;
+	cout << endl << "brak pasujacych kosci. gracz dobiera kosc." << endl<<endl;
 	if (gracz.gracz_glowa == nullptr) {
 		gracz.gracz_glowa = dobierz;
 		gracz.gracz_ogon = dobierz;
@@ -206,9 +208,11 @@ void PlayerMoveSet::usun_liste_mozliwych() {
 	}
 }
 PlayerMoveSet::~PlayerMoveSet() {
+	cout << "Destruktor PlayerMoveSet\n";
 	while (lista_mozliwych) {
 		mozliwy_ruch* temp = lista_mozliwych->next;
 		delete lista_mozliwych;
 		lista_mozliwych = temp;
 	}
+	lista_mozliwych = nullptr;
 }

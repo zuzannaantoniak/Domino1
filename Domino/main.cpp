@@ -2,6 +2,7 @@
 #include <string>
 #include "DominoClass.h"
 using namespace std;
+int licznik_passow = 0;
 int main() {
 	Stol game;
 	Player gracz1(game);
@@ -10,7 +11,7 @@ int main() {
 	HumanPlayer human2(gracz2,game);
 	
 	cout << "--------------------------------------------------------" << endl;
-	cout << "ruch komputera: " << endl;
+	cout << "ruch komputera: " << endl<<endl;
 	kosc* ruch0 = komputer.pierwszy_ruch();
 	game.doloz_kosc(ruch0);
 	game.wypisz_kosci_na_stole();

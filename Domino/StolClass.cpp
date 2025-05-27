@@ -17,6 +17,9 @@ kosc* Stol::losuj_i_usun() {
 
 	kosc* usun = dostepne_kosci_glowa;
 	for (int j = 0; j < losuj; ++j) {
+		if (losuj == 0) {
+			usun = dostepne_kosci_glowa;
+		}
 		usun = usun->next;
 	}
 
@@ -105,6 +108,7 @@ Stol::Stol() {
 }
 //destruktor
 Stol::~Stol() {
+	cout << "Destruktor Stol\n";
 	while (dostepne_kosci_glowa != nullptr) {
 		kosc* temp = dostepne_kosci_glowa->next;
 		delete dostepne_kosci_glowa;

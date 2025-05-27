@@ -4,8 +4,9 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include <ctype.h>
 using namespace std;
-static int licznik_passow = 0;
+extern int licznik_passow;
 struct kosc {
 	int oczko1;
 	int oczko2;
@@ -42,6 +43,8 @@ public:
 	string getnickname() { return nickname; }
 	int getpoints() { return points; }
 	void licz_punkty_tura();
+	void licz_punkty_win(const Player& loser);
+	void dodaj_punkty(int p) { points += p; }
 	Player(Stol& stol);
 	~Player();
 private:
@@ -51,7 +54,6 @@ public:
 	struct kosc* gracz_ogon;
 	void wypisz()const;
 private:
-	int punkty = 0;
 };
 
 
@@ -62,7 +64,6 @@ protected:
 	Stol& stol_ref;
 
 	mozliwy_ruch* lista_mozliwych = nullptr;
-private:
 	void usun_liste_mozliwych();
 public:
 	PlayerMoveSet(Player& gracz, Stol& stol)
@@ -102,5 +103,7 @@ public:
 void tura_Human_Human(Stol& stol, HumanPlayer& gracz1, AIPlayer& gracz2);
 
 bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& komputer, Player& graczAI);
+int licz_oczka(kosc* glowa);
+int zaokraglij_do_5(int liczba);
 
-#endif
+#endif;
