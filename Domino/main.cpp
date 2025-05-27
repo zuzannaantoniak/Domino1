@@ -2,43 +2,24 @@
 #include <string>
 #include "DominoClass.h"
 using namespace std;
-
 int main() {
 	Stol game;
 	Player gracz1(game);
 	Player gracz2(game);
-	AIPlayer human1(gracz1, game);
+	AIPlayer komputer(gracz1, game);
 	HumanPlayer human2(gracz2,game);
+	
 	cout << "--------------------------------------------------------" << endl;
-	cout << "kosci gracza 1: " << endl;
-	gracz1.wypisz();
-	kosc* ruch0 = human1.pierwszy_ruch();
+	cout << "ruch komputera: " << endl;
+	kosc* ruch0 = komputer.pierwszy_ruch();
 	game.doloz_kosc(ruch0);
 	game.wypisz_kosci_na_stole();
-	for (int i = 0; i < 8; ++i) {
-		cout << "--------------------------------------------------------" << endl;
-		cout << "kosci gracza 2: " << endl;
-		gracz2.wypisz();
-		mozliwy_ruch* mozliwe_ruchy = human2.znajdz_ruch();
-		kosc* ruch1 = human2.wykonaj_ruch();
-		game.doloz_kosc(ruch1);
-		game.wypisz_kosci_na_stole();
-		if (gracz2.gracz_glowa == nullptr) {
-			cout << endl << "gracz 2 wygral";
-			return 0;
-		}
-		cout << "--------------------------------------------------------" << endl;
-		cout << "kosci gracza 1: " << endl;
-		gracz1.wypisz();
-		mozliwy_ruch* mozliwe_ruchy1 = human1.znajdz_ruch();
-		kosc* ruch2 = human1.wykonaj_ruch();
-		game.doloz_kosc(ruch2);
-		game.wypisz_kosci_na_stole();
-		if (gracz1.gracz_glowa == nullptr) {
-			cout << endl << "gracz 1 wygral";
-			return 0;
+	while (true) {
+		if (tura_Human_AI(game, human2, gracz2, komputer, gracz1)) {
+			break;
 		}
 	}
-
+	cout << "punkty gracza 1: " << gracz1.getpoints() << endl;
+	cout << "punkty gracza 2: " << gracz2.getpoints() << endl;
 	return 0;
 }

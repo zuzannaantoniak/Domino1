@@ -1,7 +1,7 @@
 #include "DominoClass.h"
 using namespace std;
 //tworzy liste WSKAZNIKOW na kosci w liscie gracza
-mozliwy_ruch* PlayerMoveSet::znajdz_ruch() {
+bool PlayerMoveSet::znajdz_ruch() {
 	usun_liste_mozliwych();
 
 	Player& gracz = gracz_ref;
@@ -35,13 +35,17 @@ mozliwy_ruch* PlayerMoveSet::znajdz_ruch() {
 			temp = temp->next;
 		}
 	}
-	if (glowa == nullptr) {
-		dobierz_kosc();
+	lista_mozliwych = glowa;
+	if (glowa != nullptr) {
+		wypisz_mozliwe_ruchy();
+		return true;
+	}
+	if (dobierz_kosc() == true) {
 		return znajdz_ruch();
 	}
-	lista_mozliwych = glowa;
-	wypisz_mozliwe_ruchy();
-	return lista_mozliwych;
+	else {
+		return false;
+	}
 }
 void HumanPlayer::wypisz_mozliwe_ruchy() {
 	mozliwy_ruch* temp = lista_mozliwych;
@@ -91,29 +95,12 @@ kosc* HumanPlayer::pierwszy_ruch(){
 }
 kosc* AIPlayer::pierwszy_ruch() {
 	Player& gracz = gracz_ref;
-	random_device rand;
-	mt19937 gen(rand());
-	uniform_int_distribution<> distrib(1, 7);
-	int losuj = distrib(gen);
+	
 	kosc* temp = gracz.gracz_glowa;
-	for (int i = 0; i < losuj - 1; ++i) {
-		temp = temp->next;
-	}
-	if (temp->prev != nullptr) {
-		temp->prev->next = temp->next;
-	}
-	else {
-		gracz.gracz_glowa = temp->next;
-	}
-	if (temp->next == nullptr) {
-		temp->next->prev = temp->prev;
-	}
-	else {
-		gracz.gracz_ogon = temp->prev;
-	}
+	gracz.gracz_glowa = gracz.gracz_glowa->next;
+	gracz.gracz_glowa->prev = nullptr;
 	temp->next = nullptr;
 	temp->prev = nullptr;
-
 	return temp;
 }
 kosc* HumanPlayer::wykonaj_ruch() {
@@ -190,11 +177,12 @@ bool PlayerMoveSet::czy_dobierz() {
 	}
 	else return false;
 }
-void PlayerMoveSet::dobierz_kosc() {
+bool PlayerMoveSet::dobierz_kosc() {
 	Player& gracz = gracz_ref;
 	Stol& stol = stol_ref;
+
 	kosc* dobierz = stol.losuj_i_usun();
-	if (dobierz == nullptr) return;
+	if (dobierz == nullptr) return false;
 	cout << endl << "brak pasujacych kosci. gracz dobiera kosc." << endl;
 	if (gracz.gracz_glowa == nullptr) {
 		gracz.gracz_glowa = dobierz;
@@ -208,6 +196,7 @@ void PlayerMoveSet::dobierz_kosc() {
 		gracz.gracz_ogon = dobierz;
 		gracz.gracz_ogon->next = nullptr;
 	}
+	return true;
 }
 void PlayerMoveSet::usun_liste_mozliwych() {
 	while (lista_mozliwych) {

@@ -5,7 +5,7 @@
 #include <string>
 #include <random>
 using namespace std;
-
+static int licznik_passow = 0;
 struct kosc {
 	int oczko1;
 	int oczko2;
@@ -36,8 +36,12 @@ public:
 class Player {
 protected:
 	string nickname;
+	int points;
 public:
-	void setnickname(const string& nick);
+	void setnickname(const string& nick) { nickname = nick; };
+	string getnickname() { return nickname; }
+	int getpoints() { return points; }
+	void licz_punkty_tura();
 	Player(Stol& stol);
 	~Player();
 private:
@@ -65,11 +69,11 @@ public:
 		: gracz_ref(gracz), stol_ref(stol) {}
 
 	virtual kosc* pierwszy_ruch() = 0;
-	mozliwy_ruch* znajdz_ruch();//zwroci liste mozliwych ruchow do wykonania
+	bool znajdz_ruch();//zwroci liste mozliwych ruchow do wykonania
 	virtual kosc* wykonaj_ruch() = 0; // gracz wybiera ruch z mozliwych
 	// zwraca wzkaznik na kosc do wylozenia i usuwa go z listy gracza
 	bool czy_dobierz();
-	void dobierz_kosc();
+	bool dobierz_kosc();
 	virtual ~PlayerMoveSet();
 	virtual void wypisz_mozliwe_ruchy() = 0;
 };
@@ -93,5 +97,10 @@ public:
 	kosc* wykonaj_ruch() override;
 	void wypisz_mozliwe_ruchy() override;
 };
+
+// funkcja obslugujaca jedna runde: ruch gracza 1,liczenie punktow, ruch gracza 2, liczenie punktow
+void tura_Human_Human(Stol& stol, HumanPlayer& gracz1, AIPlayer& gracz2);
+
+bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& komputer, Player& graczAI);
 
 #endif
