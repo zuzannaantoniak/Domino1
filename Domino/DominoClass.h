@@ -5,7 +5,6 @@
 #include <string>
 #include <random>
 #include <ctype.h>
-using namespace std;
 extern int licznik_passow;
 struct kosc {
 	int oczko1;
