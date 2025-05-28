@@ -1,5 +1,5 @@
 #include "DominoClass.h"
-using namespace std;
+
 //losuje 7 kosci startowych dla gracza
 Player::Player(Stol&stol):stol_ref(stol) {
 	gracz_glowa = nullptr;
@@ -23,11 +23,11 @@ void Player::wypisz()const {
 	kosc* temp = gracz_glowa;
 	int i = 1;
 	while (temp != nullptr) {
-		cout <<i<<". ["<< temp->oczko1 << "|" << temp->oczko2 << "]     ";
+		std::cout <<i<<". ["<< temp->oczko1 << "|" << temp->oczko2 << "]     ";
 		temp = temp->next;
 		++i;
 	}
-	cout << endl;
+	std::cout << std::endl;
 }
 void Player::licz_punkty_tura() {
 	Stol& stol = stol_ref;
@@ -45,7 +45,7 @@ void Player::licz_punkty_win(const Player& loser) {
 }
 //destruktor
 Player::~Player() {
-	cout << "Destruktor Player\n";
+	std::cout << "Destruktor Player\n";
 	while (gracz_glowa != nullptr) {
 		kosc* temp = gracz_glowa->next;
 		delete gracz_glowa;

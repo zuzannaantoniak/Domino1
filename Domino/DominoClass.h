@@ -5,6 +5,7 @@
 #include <string>
 #include <random>
 #include <ctype.h>
+
 extern int licznik_passow;
 struct kosc {
 	int oczko1;
@@ -35,11 +36,11 @@ public:
 // kosci gracza, wypisywanie kosci gracza, dobieranie kosci, punkty(maybe moze dodam inna klase)
 class Player {
 protected:
-	string nickname;
+	std::string nickname;
 	int points;
 public:
-	void setnickname(const string& nick) { nickname = nick; };
-	string getnickname() { return nickname; }
+	void setnickname(const std::string& nick) { nickname = nick; };
+	std::string getnickname() { return nickname; }
 	int getpoints() { return points; }
 	void licz_punkty_tura();
 	void licz_punkty_win(const Player& loser);
@@ -99,10 +100,10 @@ public:
 };
 
 // funkcja obslugujaca jedna runde: ruch gracza 1,liczenie punktow, ruch gracza 2, liczenie punktow
-void tura_Human_Human(Stol& stol, HumanPlayer& gracz1, AIPlayer& gracz2);
+bool tura_Human_Human(Stol& stol, HumanPlayer& human1, Player& gracz1,HumanPlayer& human2, Player& gracz2);
 
 bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& komputer, Player& graczAI);
 int licz_oczka(kosc* glowa);
 int zaokraglij_do_5(int liczba);
-
+int wybierz_tryb_gry();
 #endif;

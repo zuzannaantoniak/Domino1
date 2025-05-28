@@ -1,5 +1,5 @@
 #include "DominoClass.h"
-using namespace std;
+
 //tworzy liste WSKAZNIKOW na kosci w liscie gracza
 bool PlayerMoveSet::znajdz_ruch() {
 	usun_liste_mozliwych();
@@ -50,30 +50,44 @@ bool PlayerMoveSet::znajdz_ruch() {
 void HumanPlayer::wypisz_mozliwe_ruchy() {
 	mozliwy_ruch* temp = lista_mozliwych;
 	int i = 1;
-	cout <<endl<<"Mozliwe ruchy do wykonania:"<<endl<<endl;
+	std::cout <<std::endl<<"Mozliwe ruchy do wykonania:"<<std::endl<<std::endl;
 	while (temp) {
-		cout << i << ". [" << temp->wskaznik_na_kosc->oczko1
+		std::cout << i << ". [" << temp->wskaznik_na_kosc->oczko1
 			<< "|" << temp->wskaznik_na_kosc->oczko2 << "]     ";
 		temp = temp->next;
 		++i;
 	}
-	cout << "\n\n";
+	std::cout << "\n\n";
 }
 void AIPlayer::wypisz_mozliwe_ruchy() {
-	cout << endl << endl;
+	std::cout << std::endl << std::endl;
 }
 kosc* HumanPlayer::pierwszy_ruch(){
 	Player& gracz = gracz_ref;
-	cout <<endl<<endl<<"Wybierz kosc ktora chcesz wylozyc na poczatek:"<<endl<<endl;
-	int wybor = 0;
-	cin >> wybor;
-	while (wybor < 1 || wybor>7) {
-		cout << "Blad! Masz do wyboru 7 kosci." << endl;
-		cout << "Wybierz kosc ktora chcesz wylozyc na poczatek:" << endl << endl;
-		cin >> wybor;
+	std::cout <<std::endl<<std::endl<<"Wybierz kosc ktora chcesz wylozyc na poczatek:"<<std::endl<<std::endl;
+	gracz.wypisz();
+	std::string wybor;
+	int b;
+	while (true) {
+		std::cin >> wybor;
+		bool valid = true;
+		for (size_t i = 0; i < wybor.length(); ++i) {
+			if (!std::isdigit(wybor[i])) {
+				valid = false;
+				break;
+			}
+		}
+		if (valid) {
+			b = stoi(wybor);
+			if (b >= 1 && b <= 7) {
+				break;
+			}
+		}
+		std::cout << "Blad! Masz do wyboru 7 liczb. Sproboj ponownie." << std::endl;
 	}
+	
 	kosc* temp = gracz.gracz_glowa;
-	for (int i = 0; i < wybor - 1; ++i) {
+	for (int i = 0; i < b - 1; ++i) {
 		temp = temp->next;
 	}
 	if (temp->prev != nullptr) {
@@ -116,16 +130,27 @@ kosc* HumanPlayer::wykonaj_ruch() {
 		temp = temp->next;
 	}
 
-	cout << "Wybierz kosc : ";
-	char wybor = 0;
-	cin >> wybor;
-	int b = wybor - '0';
-	while (b < 1 || b > i||isalpha(wybor)!=0) {
-		cout << "Bledny wybor, sprobuj ponownie: ";
-		cin >> wybor;
-		b = wybor - '0';
+	std::cout << "Wybierz kosc : ";
+	std::string wybor;
+	int b;
+	while (true) {
+		std::cin >> wybor;
+		bool valid = true;
+		for (size_t i = 0; i < wybor.length(); ++i) {
+			if (!std::isdigit(wybor[i])) {
+				valid = false;
+				break;
+			}
+		}
+		if (valid) {
+			b = stoi(wybor);
+			if (b >= 1 && b <= i) {
+				break;
+			}
+		}
+		std::cout << "Bledny wybor! Sproboj ponownie." << std::endl;
 	}
-	cout << endl;
+	std::cout << std::endl;
 	mozliwy_ruch* wybrany = lista_mozliwych;
 	for (int j = 1; j < b; ++j) {
 		wybrany = wybrany->next;
@@ -185,7 +210,7 @@ bool PlayerMoveSet::dobierz_kosc() {
 
 	kosc* dobierz = stol.losuj_i_usun();
 	if (dobierz == nullptr) return false;
-	cout << endl << "brak pasujacych kosci. gracz dobiera kosc." << endl<<endl;
+	std::cout << std::endl << "brak pasujacych kosci. gracz dobiera kosc." << std::endl<<std::endl;
 	if (gracz.gracz_glowa == nullptr) {
 		gracz.gracz_glowa = dobierz;
 		gracz.gracz_ogon = dobierz;
@@ -208,7 +233,7 @@ void PlayerMoveSet::usun_liste_mozliwych() {
 	}
 }
 PlayerMoveSet::~PlayerMoveSet() {
-	cout << "Destruktor PlayerMoveSet\n";
+	std::cout << "Destruktor PlayerMoveSet\n";
 	while (lista_mozliwych) {
 		mozliwy_ruch* temp = lista_mozliwych->next;
 		delete lista_mozliwych;
