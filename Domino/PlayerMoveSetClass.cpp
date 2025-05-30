@@ -198,12 +198,6 @@ kosc* AIPlayer::wykonaj_ruch() {
 	k->prev = nullptr;
 	return k;
 }
-bool PlayerMoveSet::czy_dobierz() {
-	if (lista_mozliwych == nullptr) {
-		return true;
-	}
-	else return false;
-}
 bool PlayerMoveSet::dobierz_kosc() {
 	Player& gracz = gracz_ref;
 	Stol& stol = stol_ref;
@@ -211,6 +205,7 @@ bool PlayerMoveSet::dobierz_kosc() {
 	kosc* dobierz = stol.losuj_i_usun();
 	if (dobierz == nullptr) return false;
 	std::cout << std::endl << "brak pasujacych kosci. gracz dobiera kosc." << std::endl<<std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (gracz.gracz_glowa == nullptr) {
 		gracz.gracz_glowa = dobierz;
 		gracz.gracz_ogon = dobierz;
@@ -233,7 +228,7 @@ void PlayerMoveSet::usun_liste_mozliwych() {
 	}
 }
 PlayerMoveSet::~PlayerMoveSet() {
-	std::cout << "Destruktor PlayerMoveSet\n";
+	//std::cout << "Destruktor PlayerMoveSet\n";
 	while (lista_mozliwych) {
 		mozliwy_ruch* temp = lista_mozliwych->next;
 		delete lista_mozliwych;

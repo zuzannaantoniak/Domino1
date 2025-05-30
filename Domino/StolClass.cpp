@@ -108,7 +108,7 @@ Stol::Stol() {
 }
 //destruktor
 Stol::~Stol() {
-	std::cout << "Destruktor Stol\n";
+//	std::cout << "Destruktor Stol\n";
 	while (dostepne_kosci_glowa != nullptr) {
 		kosc* temp = dostepne_kosci_glowa->next;
 		delete dostepne_kosci_glowa;

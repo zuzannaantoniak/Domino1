@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "DominoClass.h"
 
 int wybierz_tryb_gry() {
@@ -25,10 +26,12 @@ int wybierz_tryb_gry() {
 	return b;
 }
 bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& komputer, Player& graczAI) {
-	std::cout << "--------------------------------------------------------" << std::endl;
-	std::cout << " ruch gracza: " << graczH.getnickname() << std::endl;
+	std::cout << "----------------------------------------------------------------------------" << std::endl;
+	std::cout << " ruch gracza: " << graczH.getnickname() << std::endl<<std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	std::cout << "kosci: " << std::endl << std::endl;
 	graczH.wypisz();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (human.znajdz_ruch()) {
 		kosc* ruch_human = human.wykonaj_ruch();
 		stol.doloz_kosc(ruch_human);
@@ -37,10 +40,12 @@ bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& kom
 	}
 	else {
 		std::cout << "brak mozliwych ruchow. gracz pomija ture." << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		licznik_passow++;
 	}
 	if (licznik_passow >= 2) {
 		std::cout << "Koniec gry. Brak mozliwych ruchow.\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		int sumaH = licz_oczka(graczH.gracz_glowa);
 		int sumaAI = licz_oczka(graczAI.gracz_glowa);
 		if (sumaH > sumaAI) {
@@ -58,13 +63,16 @@ bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& kom
 		return true;
 	}
 	stol.wypisz_kosci_na_stole();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (graczH.gracz_glowa == nullptr) {
 		std::cout << std::endl << "Koniec gry. Gracz " << graczH.getnickname() << " wylozyl wszystkie kosci!\n\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		graczH.licz_punkty_win(graczAI);
 		return true;
 	}
-	std::cout << "--------------------------------------------------------" << std::endl;
-	std::cout << "ruch komputera: " << std::endl;
+	std::cout << "----------------------------------------------------------------------------" << std::endl;
+	std::cout << "ruch komputera: " << std::endl << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (komputer.znajdz_ruch()) {
 		kosc* ruch_AI = komputer.wykonaj_ruch();
 		stol.doloz_kosc(ruch_AI);
@@ -73,10 +81,12 @@ bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& kom
 	}
 	else {
 		std::cout << "brak mozliwych ruchow. gracz pomija ture." << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		licznik_passow++;
 	}
 	if (licznik_passow >= 2) {
 		std::cout << "Koniec gry. Brak mozliwych ruchow.\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		int sumaH = licz_oczka(graczH.gracz_glowa);
 		int sumaAI = licz_oczka(graczAI.gracz_glowa);
 		if (sumaH > sumaAI) {
@@ -94,8 +104,10 @@ bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& kom
 		return true;
 	}
 	stol.wypisz_kosci_na_stole();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (graczAI.gracz_glowa == nullptr) {
 		std::cout << std::endl << "Koniec gry. Komputer wylozyl wszystkie kosci.\n\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		graczAI.licz_punkty_win(graczH);
 		return true;
 	}
@@ -103,9 +115,11 @@ bool tura_Human_AI(Stol& stol, HumanPlayer& human, Player& graczH, AIPlayer& kom
 }
 bool tura_Human_Human(Stol& stol, HumanPlayer& human1, Player& gracz1, HumanPlayer& human2, Player& gracz2) {
 	std::cout << "--------------------------------------------------------" << std::endl;
-	std::cout << " ruch gracza: " << gracz1.getnickname() << std::endl;
+	std::cout << " ruch gracza: " << gracz1.getnickname() << std::endl << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	std::cout << "kosci: " << std::endl << std::endl;
 	gracz1.wypisz();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (human1.znajdz_ruch()) {
 		kosc* ruch_human = human1.wykonaj_ruch();
 		stol.doloz_kosc(ruch_human);
@@ -114,10 +128,12 @@ bool tura_Human_Human(Stol& stol, HumanPlayer& human1, Player& gracz1, HumanPlay
 	}
 	else {
 		std::cout << "brak mozliwych ruchow. gracz pomija ture." << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		licznik_passow++;
 	}
 	if (licznik_passow >= 2) {
 		std::cout << "Koniec gry. Brak mozliwych ruchow.\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		int sumaH = licz_oczka(gracz1.gracz_glowa);
 		int sumaAI = licz_oczka(gracz2.gracz_glowa);
 		if (sumaH > sumaAI) {
@@ -135,15 +151,19 @@ bool tura_Human_Human(Stol& stol, HumanPlayer& human1, Player& gracz1, HumanPlay
 		return true;
 	}
 	stol.wypisz_kosci_na_stole();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (gracz1.gracz_glowa == nullptr) {
 		std::cout << std::endl << "Koniec gry. Gracz " << gracz1.getnickname() << " wylozyl wszystkie kosci!\n\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		gracz1.licz_punkty_win(gracz2);
 		return true;
 	}
 	std::cout << "--------------------------------------------------------" << std::endl;
-	std::cout << " ruch gracza: " << gracz2.getnickname() << std::endl;
+	std::cout << " ruch gracza: " << gracz2.getnickname() << std::endl << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	std::cout << "kosci: " << std::endl << std::endl;
 	gracz2.wypisz();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (human2.znajdz_ruch()) {
 		kosc* ruch_human = human2.wykonaj_ruch();
 		stol.doloz_kosc(ruch_human);
@@ -152,10 +172,12 @@ bool tura_Human_Human(Stol& stol, HumanPlayer& human1, Player& gracz1, HumanPlay
 	}
 	else {
 		std::cout << "brak mozliwych ruchow. gracz pomija ture.\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		licznik_passow++;
 	}
 	if (licznik_passow >= 2) {
 		std::cout << "Koniec gry. Brak mozliwych ruchow.\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		int sumaH = licz_oczka(gracz1.gracz_glowa);
 		int sumaAI = licz_oczka(gracz2.gracz_glowa);
 		if (sumaH > sumaAI) {
@@ -173,8 +195,10 @@ bool tura_Human_Human(Stol& stol, HumanPlayer& human1, Player& gracz1, HumanPlay
 		return true;
 	}
 	stol.wypisz_kosci_na_stole();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	if (gracz2.gracz_glowa == nullptr) {
 		std::cout << std::endl << "Koniec gry. Gracz " << gracz2.getnickname() << " wylozyl wszystkie kosci!\n\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		gracz2.licz_punkty_win(gracz1);
 		return true;
 	}
@@ -193,4 +217,23 @@ int zaokraglij_do_5(int liczba) {
 	int pom;
 	pom = ((liczba + 2) / 5) * 5;
 	return pom;
+}
+void wczytaj_do_pliku(std::string nick1,std::string nick2, int punkty1,int punkty2,int max) {
+	time_t log_time;
+	time(&log_time);
+	struct tm* time = localtime(& log_time);
+	std::string log_gracz = "historia_gier_" + nick1;
+	std::ofstream log(log_gracz, std::ios::app);
+	if (!log) {
+		std::cerr << "Blad przy otwarciu pliku! Dane z tej rozgrywki nie zostana zapisane :(\n";
+		return;
+	}
+	if (punkty1 >= max && punkty1 > punkty2) {
+		log << "Gracz " << nick1 << " wygral z graczem " << nick2 << " wynikiem " << punkty1 << " do " << punkty2 << ".\n";
+	}
+	else {
+		log<< "Gracz "<<nick1<<" przegral z graczem "<<nick2<< " wynikiem " <<punkty1 << " do " <<punkty2 <<".\n";
+	}
+	log << "Rozgrywka zakonczona o: " << time->tm_hour << ":" << time->tm_min << ":" << time->tm_sec << " " << time->tm_mday<< "/" << time->tm_mon + 1 << "/" << time->tm_year + 1900 << "\n\n\n";
+	log.close();
 }
