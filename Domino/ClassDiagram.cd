@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AIPlayer" Collapsed="true">
+    <Position X="13.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAUABAAAAAEAAAAAAAA=</HashCode>
+      <FileName>DominoClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HumanPlayer" Collapsed="true">
+    <Position X="10.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQABAAAAAEAAAAAAAQ=</HashCode>
+      <FileName>DominoClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAIACAEAAAQAAAAAAAAgAAAAAAAAAAQQEAAQCAARQ=</HashCode>
+      <FileName>DominoClass.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="stol_ref" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PlayerMoveSet" Collapsed="true">
+    <Position X="12" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACCAAgAAEAQBBCAAAAEEACAAAAA=</HashCode>
+      <FileName>DominoClass.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="gracz_ref" />
+      <Field Name="stol_ref" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Stol" Collapsed="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAEAAAAAAAAACAEQAAAIAAgEAAQAAAAA=</HashCode>
+      <FileName>DominoClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -84,7 +84,7 @@ public:
 	virtual void wypisz_mozliwe_ruchy() = 0;//wypisuje liste mozliwych ruchow gracza
 };
 
-
+//klasa pochodna dla ruchow dla czlowieka
 class HumanPlayer :public PlayerMoveSet {
 public:
 	HumanPlayer(Player& gracz, Stol& stol)
@@ -94,7 +94,7 @@ public:
 	void wypisz_mozliwe_ruchy() override;//wypisuje liste mozliwych ruchow gracza
 };
 
-
+//klasa pochodna dla ruchow dla komputera
 class AIPlayer : public PlayerMoveSet {
 public:
 	AIPlayer(Player& gracz, Stol& stol)
@@ -116,4 +116,7 @@ int zaokraglij_do_5(int liczba);
 int wybierz_tryb_gry();
 //wczytuje wynik meczu do pliku, kazdy nick ma swoj oddzielny plik
 void wczytaj_do_pliku(std::string nick1, std::string nick2, int punkty1, int punkty2, int max);
+int odczytaj_pliki_wybor();
+//czyta plik
+void odczytaj_plik(std::string nick);
 #endif;

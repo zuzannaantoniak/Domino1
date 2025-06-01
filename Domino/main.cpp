@@ -46,7 +46,12 @@ int main() {
 		std::cout << "\n\n\nKoniec gry! Wygral: "<< (punkty_gracza1 >= MAX_PUNKTY&&punkty_gracza1>punkty_gracza2 ? nick1 : nick2) << std::endl;
 		wczytaj_do_pliku(nick1, nick2, punkty_gracza1, punkty_gracza2, MAX_PUNKTY);
 		wczytaj_do_pliku(nick2, nick1, punkty_gracza2, punkty_gracza1, MAX_PUNKTY);
-		
+		int pom = odczytaj_pliki_wybor();
+		if (pom == 1) {
+			odczytaj_plik(nick1);
+			std::cout << "\n\n";
+			odczytaj_plik(nick2);
+		}
 	}
 	else {
 		std::cout << "podaj nick gracza: ";
@@ -82,6 +87,10 @@ int main() {
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		std::cout << "\n\n\nKoniec gry! Wygral: " << (punkty_gracza1 >= MAX_PUNKTY&&punkty_gracza1>punkty_komputera ? nick1 : "komputer") << std::endl;
 		wczytaj_do_pliku(nick1, "komputer", punkty_gracza1, punkty_komputera, MAX_PUNKTY);
+		int pom = odczytaj_pliki_wybor();
+		if (pom == 1) {
+			odczytaj_plik(nick1);
+		}
 	}
 	return 0;
 }

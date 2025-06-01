@@ -1,6 +1,5 @@
 #include "DominoClass.h"
 
-//losuje jedna kosc z dostepnych i usuwa ja z tej listy
 kosc* Stol::losuj_i_usun() {
 	std::random_device rand;
 	std::mt19937 gen(rand());
@@ -88,7 +87,6 @@ void Stol::doloz_kosc(kosc* nowa) {
 		<< kosci_na_stole_glowa->oczko1 << "] ani ogona ["
 		<< kosci_na_stole_ogon->oczko2 << "]." << std::endl;
 }
-//tworzy liste kosci do gry
 Stol::Stol() {
 	dostepne_kosci_glowa = nullptr;
 	dostepne_kosci_ogon = nullptr;
@@ -106,7 +104,6 @@ Stol::Stol() {
 	}
 	dostepne_kosci_ogon->next = nullptr;
 }
-//destruktor
 Stol::~Stol() {
 //	std::cout << "Destruktor Stol\n";
 	while (dostepne_kosci_glowa != nullptr) {

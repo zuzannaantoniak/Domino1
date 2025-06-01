@@ -1,6 +1,5 @@
 #include "DominoClass.h"
 
-//tworzy liste WSKAZNIKOW na kosci w liscie gracza
 bool PlayerMoveSet::znajdz_ruch() {
 	usun_liste_mozliwych();
 

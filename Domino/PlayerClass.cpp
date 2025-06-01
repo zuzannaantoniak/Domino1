@@ -1,6 +1,5 @@
 #include "DominoClass.h"
 
-//losuje 7 kosci startowych dla gracza
 Player::Player(Stol&stol,std::string nick):stol_ref(stol), nickname(nick), points(0) {
 	gracz_glowa = nullptr;
 	gracz_ogon = nullptr;
@@ -17,7 +16,6 @@ Player::Player(Stol&stol,std::string nick):stol_ref(stol), nickname(nick), point
 		gracz_ogon = nowa;
 	}
 }
-//wypisuje kosci gracza
 void Player::wypisz()const {
 	kosc* temp = gracz_glowa;
 	int i = 1;
@@ -42,7 +40,6 @@ void Player::licz_punkty_win(const Player& loser) {
 	int punkty = zaokraglij_do_5(suma);
 	points += punkty;
 }
-//destruktor
 Player::~Player() {
 	//std::cout << "Destruktor Player\n";
 	while (gracz_glowa != nullptr) {

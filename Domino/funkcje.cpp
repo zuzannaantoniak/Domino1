@@ -237,3 +237,40 @@ void wczytaj_do_pliku(std::string nick1,std::string nick2, int punkty1,int punkt
 	log << "Rozgrywka zakonczona o: " << time->tm_hour << ":" << time->tm_min << ":" << time->tm_sec << " " << time->tm_mday<< "/" << time->tm_mon + 1 << "/" << time->tm_year + 1900 << "\n\n\n";
 	log.close();
 }
+int odczytaj_pliki_wybor() {
+	std::cout << "Wpisz 1, jesli chcesz zobaczyc historie gier graczy, lub 2 jesli chcesz zakonczyc program:" << std::endl;
+	std::string tryb;
+	int b;
+	while (true) {
+		std::cin >> tryb;
+		bool valid = true;
+		for (size_t i = 0; i < tryb.length(); ++i) {
+			if (!std::isdigit(tryb[i])) {
+				valid = false;
+				break;
+			}
+		}
+		if (valid) {
+			b = stoi(tryb);
+			if (b == 1 || b == 2) {
+				break;
+			}
+		}
+		std::cout << "Nie znam polecenia. Wybierz 1 lub 2." << std::endl;
+	}
+	return b;
+}
+void odczytaj_plik(std::string nick) {
+	std::string gracz = "historia_gier_" + nick;
+	std::ifstream file(gracz);
+	if (!file) {
+		std::cerr << "Blad przy otwarciu pliku!\n";
+		return;
+	}
+	std::cout << "Historia gracza " << nick << ":\n\n";
+	std::string line;
+	while (std::getline(file, line)) {
+		std::cout << line << std::endl;
+	}
+	file.close();
+}
